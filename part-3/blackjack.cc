@@ -1,4 +1,14 @@
-// TODO: Add the required header
+// Max Rivas
+// CPSC 120-01
+// 2022-10-06
+// Rivas.max11@csu.fullerton.edu
+// @Mrivas0331
+//
+// Lab 05-03
+// Partners: @brian-250
+//
+// Creates a game of blackjack
+//
 
 #include <iostream>
 #include <string>
@@ -6,29 +16,35 @@
 
 int main(int argc, char* argv[]) {
   std::vector<std::string> arguments(argv, argv + argc);
-
-  // TODO: Declare variables necessary to make your loop work.
-
-  // TODO: Write a for-each loop that iterates through the command line
-  // arguments.
-  // The loop needs to skip over the command name, which is the first element
-  // of the arguments vector.
-  // For each card:
-  //   - A number card (2 through 10) counts as its value. So a 5 adds 5 to
-  //     the score.
-  //   - A face card (J, Q, K) counts as 10.
-  //   - An ace (A) counts as 1.
-  //   - If an argument is invalid (none of "2" through "10", "J", "Q", "K",
-  //     or "A": print the error message
-  //        error: unknown card '*ARGUMENT*'
-  //     and stop the program with a non-zero error code.
-  // Further, an ace may count as 11 if it increases the score, without making
-  // the score go over 21.
-
-  // TODO: If the score is 21 or less, print output of the form
-  // Score is *SCORE*
-  // Otherwise (score is greater than 21), print output of the form
-  // Score is *SCORE*, BUST
-
+  int sum = 0;
+  int bust = 21;
+  for (std::string& copy : arguments) {
+    if (copy == arguments[0]) {
+      continue;
+    }
+    if (copy == "J" || copy == "j" || copy == "K" || copy == "k" ||
+        copy == "Q" || copy == "q") {
+      sum += 10;
+    } else if (copy == "A" || copy == "a") {
+      if (sum + 11 > 21) {
+        sum += 1;
+      } else if (sum + 11 <= 21) {
+        sum += 11;
+      }
+    } else if (copy.size() >= 2 && copy != "10") {
+      std::cout << "error: unknown card '" << copy << "'";
+      return 1;
+    } else if (std::stoi(copy) > 1 && std::stoi(copy) < 11) {
+      sum += std::stoi(copy);
+    } else {
+      std::cout << "error: unknown card '" << std::stoi(copy) << "'";
+      return 1;
+    }
+  }
+  if (sum <= bust) {
+    std::cout << "Score is " << sum;
+  } else {
+    std::cout << "Score is " << sum << ", BUST";
+  }
   return 0;
 }
